@@ -238,6 +238,30 @@
   // provided, provide a default one
   _.some = function(collection, iterator) {
     // TIP: There's a very clever way to re-use every() here.
+    //if no iterator is provided, provide default
+    if (iterator === undefined) {
+      iterator = function(value) {
+        if (value) {
+          return true;
+        } else {
+          return false;
+        }
+      }
+    }
+
+    //if every element doesn't pass the truth test, then some don't
+    var allFailed = _.every(collection, function(value) {
+      if (iterator(value)) {
+        return false;
+      } else {
+        return true;
+      }
+    });
+    if (allFailed) {
+      return false;
+    } else {
+      return true;
+    }
   };
 
 
