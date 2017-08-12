@@ -318,6 +318,11 @@
 
   // Return a function that can be called at most one time. Subsequent calls
   // should return the previously returned value.
+
+  //function double() { return n * 2; }
+  //_.once(double)
+  // alreadyCalled = false;
+
   _.once = function(func) {
     // TIP: These variables are stored in a "closure scope" (worth researching),
     // so that they'll remain available to the newly-generated function every
@@ -347,7 +352,29 @@
   // _.memoize should return a function that, when called, will check if it has
   // already computed the result for the given argument and return that value
   // instead if possible.
+
+  //function double(n) { return n * 2; }
+  //var double5 = _.memoize(double(5)) //calculates
+  //double5(); //returns stored value
+  //var double6 = _.memoize(double(6)) //calculates
+  //double6(); //returns stored value  
+  //double6(); //returns stored value
+
   _.memoize = function(func) {
+    
+    var memorizedArgsObj = {};
+    //if func already called with those arguments, return stored value (object? where each prop name is argument: value)
+    //return function (closure scope) that returns the stored value
+
+    return function() {
+      //if property doesn't exist
+      if(!memorizedArgsObj.hasOwnProperty(arguments[0])) {
+        //if arguments is an array, use apply
+        memorizedArgsObj[arguments[0]] = func.call(this, arguments[0]);
+      }
+      return memorizedArgsObj[arguments[0]];
+    };
+
   };
 
   // Delays a function for the given number of milliseconds, and then calls
