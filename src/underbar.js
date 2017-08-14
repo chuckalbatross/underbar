@@ -367,16 +367,21 @@
     //return function (closure scope) that returns the stored value
 
     return function() {
-      //if property doesn't exist
-      if(!memorizedArgsObj.hasOwnProperty(arguments[0])) {
-        //if arguments is an array, use apply
-        memorizedArgsObj[arguments[0]] = func.call(this, arguments[0]);
-      }
-      return memorizedArgsObj[arguments[0]];
-    };
+      //stringify arguments (convert arguments object to array, then join into string separated by ' ')
+      var argsArray = Array.prototype.slice.call(arguments);
+      var argsString = argsArray.join(' ');
 
+      //if property doesn't exist
+      if(!memorizedArgsObj.hasOwnProperty(argsString)) {
+        //if arguments is an array, use apply
+        //memorizedArgsObj[argsString] = func.call(this, arguments);
+        memorizedArgsObj[argsString] = func.apply(this, arguments);
+      }
+      return memorizedArgsObj[argsString];
+    };
   };
 
+  
   // Delays a function for the given number of milliseconds, and then calls
   // it with the arguments supplied.
   //
